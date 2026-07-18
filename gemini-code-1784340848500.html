@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คลังความรู้ฟิสิกส์ ม.5: Simple Harmonic Motion & Mechanical Waves</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #0f172a;
+            --accent: #0d9488;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #334155;
+            --text-dark: #0f172a;
+            --border: #e2e8f0;
+            --hint-bg: #f0fdf4;
+            --hint-border: #bbf7d0;
+            --hint-text: #166534;
+            --sol-bg: #eff6ff;
+            --sol-border: #bfdbfe;
+            --sol-text: #1e40af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Sarabun', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Tabs Menu Navigation */
+        .tabs-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            background: var(--card-bg);
+            padding: 0.75rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tab-btn:hover {
+            background: var(--bg);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Content Sections */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography & Components */
+        .section-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            color: var(--text-dark);
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--primary);
+            padding-left: 0.75rem;
+        }
+
+        h3 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.75rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Math Styling */
+        .math-block {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: #0f172a;
+            margin: 1rem 0;
+            text-align: center;
+            font-size: 1.2rem;
+            border-left: 4px solid var(--accent);
+            overflow-x: auto;
+        }
+
+        .math-inline {
+            background: #f1f5f9;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        /* Grid Frameworks */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .formula-card {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 8px;
+        }
+
+        .badge-method {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+        .bg-full { background: #e0f2fe; color: #0369a1; }
+        .bg-shortcut { background: #fef3c7; color: #b45309; }
+
+        /* Quiz UI Layout */
+        .quiz-filter {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            cursor: pointer;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--text-dark);
+            color: white;
+            border-color: var(--text-dark);
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .q-number {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .q-tag {
+            font-size: 0.8rem;
+            background: #f1f5f9;
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .q-text {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 1.25rem;
+        }
+
+        .quiz-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .btn-hint {
+            background: #e6f4ea;
+            color: #137333;
+        }
+        .btn-hint:hover { background: #d2e9d6; }
+
+        .btn-sol {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+        .btn-sol:hover { background: #d2e3fc; }
+
+        .hint-box, .sol-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .hint-box {
+            background: var(--hint-bg);
+            border: 1px solid var(--hint-border);
+            color: var(--hint-text);
+        }
+
+        .sol-box {
+            background: var(--sol-bg);
+            border: 1px solid var(--sol-border);
+            color: var(--sol-text);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            background: var(--secondary);
+            color: white;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ระบบการเรียนรู้ฟิสิกส์ ม.5 แบบละเอียดสมบูรณ์</h1>
+        <p>บทเรียนเจาะลึก: การเคลื่อนที่แบบฮาร์มอนิกอย่างง่าย (SHM) และ คลื่นกล (Mechanical Waves)</p>
+    </header>
+
+    <div class="container">
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('intro')">บทนำและการเชื่อมโยง</button>
+            <button class="tab-btn" onclick="switchTab('shm')">1. ฮาร์มอนิกอย่างง่าย (SHM)</button>
+            <button class="tab-btn" onclick="switchTab('waves')">2. คลื่นกล (Waves)</button>
+            <button class="tab-btn" onclick="switchTab('formulas')">สรุปสูตร & ทางลัด</button>
+            <button class="tab-btn" onclick="switchTab('quiz')">คลังข้อสอบย่อย & รวม (40 ข้อ)</button>
+        </nav>
+
+        <div id="intro" class="tab-content active">
+            <div class="section-card">
+                <h2>การเชื่อมโยงเชิงมโนทัศน์: ทำไม SHM และ คลื่นกล ถึงสัมพันธ์กันอย่างแนบแน่น?</h2>
+                <p>ในการศึกษาฟิสิกส์ ม.5 นักเรียนหลายคนมักแยกบทเรียน <strong>การเคลื่อนที่แบบฮาร์มอนิกอย่างง่าย (Simple Harmonic Motion - SHM)</strong> และ <strong>คลื่นกล (Mechanical Waves)</strong> ออกจากกันโดยสิ้นเชิง แต่ในความเป็นจริงแล้ว <strong>"คลื่นกลคือผลลัพธ์ของการส่งทอดพลังงานผ่านอนุภาคตัวกลางที่กำลังแกว่งตัวแบบ SHM อย่างต่อเนื่อง"</strong></p>
+                
+                <h3>สะพานเชื่อมโยงที่ 1: การฉายเงาของการเคลื่อนที่แบบวงกลมสม่ำเสมอ</h3>
+                <p>รากฐานของสมการ SHM ทั้งหมดมาจากการพิจารณาวัตถุที่หมุนเป็นวงกลมด้วยความเร็วเชิงมุมคงที่ <span class="math-inline">&omega;</span> เมื่อเราฉายแสงไฟจากด้านบนลงมา เงาของวัตถุบนแกน X จะเคลื่อนที่กลับไปกลับมาระหว่างจุดสองจุดที่เป็นแอมพลิจูดสูงสุด เงานั้นแหละคือประชากรตัวอย่างของการเคลื่อนที่แบบ SHM</p>
+
+                <h3>สะพานเชื่อมโยงที่ 2: อนุภาคตัวกลางทุกลูกคือฟันเฟือง SHM</h3>
+                <p>เมื่อคลื่นกลเคลื่อนที่ผ่านตัวกลาง เช่น คลื่นในเส้นเชือก พลังงานจะถูกส่งผ่านจากซ้ายไปขวา ทว่า <em>เนื้อเชือกหรืออนุภาคแต่ละตัวไม่ได้วิ่งตามคลื่นไปตัวละครเหล่านั้นเพียงแค่ขยับขึ้นและลงอยู่กับที่ ณ ตำแหน่งเดิมของมัน</em> การขยับขึ้นลงรอบจุดสมดุลเดิมนี้มีลักษณะตามเงื่อนไขของ SHM ทุกประการ! ดังนั้น:</p>
+                <ul>
+                    <li><strong>ความถี่ของคลื่น (f)</strong> ก็คือ ความถี่ในการสั่นแบบ SHM ของอนุภาคแต่ละตัว</li>
+                    <li><strong>แอมพลิจูดของคลื่น (A)</strong> ก็คือ ระยะขยับจากจุดสมดุลสูงสุดของอนุภาคที่ทำ SHM</li>
+                    <li><strong>คาบการเคลื่อนที่ของคลื่น (T)</strong> ก็คือ เวลาที่อนุภาคตัวกลางใช้แกว่งครบรอบ SHM 1 รอบเต็ม</li>
+                </ul>
+                <div class="math-block">โครงสร้างปฏิสัมพันธ์: แหล่งกำเนิดทำ SHM &rarr; ถ่ายทอดพลังงาน &rarr; ตัวกลางสั่นแบบ SHM พลัดกันไปเชิงพื้นที่ &rarr; เกิดรูปคลื่นขยับ (v = f&lambda;)</div>
+            </div>
+        </div>
+
+        <div id="shm" class="tab-content">
+            <div class="section-card">
+                <h2>1. การเคลื่อนที่แบบฮาร์มอนิกอย่างง่าย (Simple Harmonic Motion)</h2>
+                <p><strong>นิยามอย่างเป็นทางการ:</strong> การเคลื่อนที่กลับไปกลับมาซ้ำทางเดิมผ่านตำแหน่งสมดุล โดยมีแรงดึงกลับ (Restoring Force) แปรผันตรงกับระยะขยับจากการกระจัด แต่มีทิศทางตรงกันข้ามเสมอ</p>
+                
+                <h3>1.1 สมการจลนศาสตร์ของ SHM (วิธีเต็มเชิงอนุพันธ์)</h3>
+                <p>หากเริ่มต้นสังเกตการณ์ที่จุดสมดุลพอดี สมการการกระจัด ความเร็ว และความเร่ง ณ เวลา <span class="math-inline">t</span> ใดๆ จะเขียนได้ดังนี้:</p>
+                <div class="math-block">การกระจัด: x(t) = A sin(&omega;t)<br>ความเร็ว: v(t) = &omega;A cos(&omega;t)<br>ความเร่ง: a(t) = -&omega;<sup>2</sup>A sin(&omega;t) = -&omega;<sup>2</sup>x</div>
+                
+                <p><strong>การวิเคราะห์เชิงลึก:</strong></p>
+                <ul>
+                    <li>ที่ตำแหน่งสมดุล (<span class="math-inline">x = 0</span>): วัตถุจะไม่มีแรงดึงกลับ ทำให้ความเร่ง <span class="math-inline">a = 0</span> แต่จะมีพลังงานจลน์สะสมสูงที่สุด ส่งผลให้ความเร็วมีค่ามากที่สุด <span class="math-inline">v<sub>max</sub> = &omega;A</span></li>
+                    <li>ที่ตำแหน่งปลายสุด (<span class="math-inline">x = &plusmn;A</span>): วัตถุจะหยุดนิ่งชั่วขณะ ทำให้ความเร็ว <span class="math-inline">v = 0</span> แต่แรงดึงกลับจากสปริงหรือเชือกจะตึงตัวที่สุด ทำให้เกิดความเร่งสูงสุดในทิศสวนทางกัน <span class="math-inline">a<sub>max</sub> = &omega;<sup>2</sup>A</span></li>
+                </ul>
+
+                <h3>1.2 การประยุกต์ใช้กับระบบทางกายภาพ</h3>
+                <p><strong>1. ระบบมวลติดปลายสปริง (Mass-Spring System)</strong><br>
+                เมื่อมวล <span class="math-inline">m</span> ติดสปริงค่าคงที่ <span class="math-inline">k</span> แรงดึงกลับตามกฎของฮุคคือ <span class="math-inline">F = -kx</span> นำไปคำนวณหาความถี่เชิงมุมและคาบการแกว่งได้ว่า:
+                </p>
+                <div class="math-block">&omega; = &radic;(k/m) &nbsp;|&nbsp; T = 2&pi;&radic;(m/k)</div>
+
+                <p><strong>2. ระบบลูกตุ้มอย่างง่าย (Simple Pendulum)</strong><br>
+                เมื่อผูกมวล <span class="math-inline">m</span> กับเชือกยาว <span class="math-inline">L</span> แกว่งเป็นมุมแคบๆ (&theta; &lt; 10&deg;) แรงดึงกลับจะมาจากองค์ประกอบของแรงโน้มถ่วงสนามโลก <span class="math-inline">g</span>:
+                </p>
+                <div class="math-block">&omega; = &radic;(g/L) &nbsp;|&nbsp; T = 2&pi;&radic;(L/g)</div>
+                <p><em>ข้อควรจำเชิงทฤษฎี:</em> คาบของลูกตุ้มนาฬิกา <strong>ไม่ขึ้นกับมวลวัตถุเลย</strong> แกว่งมวล 1 kg หรือ 100 kg บนเชือกยาวเท่าเดิม คาบเวลาเท่าเดิมเสมอ!</p>
+            </div>
+        </div>
+
+        <div id="waves" class="tab-content">
+            <div class="section-card">
+                <h2>2. คลื่นกล (Mechanical Waves)</h2>
+                <p><strong>นิยาม:</strong> การรบกวนตัวกลางเพื่อถ่ายโอนพลังงานจากจุดหนึ่งไปยังอีกจุดหนึ่ง โดยตัวกลางจำเป็นต้องมีสมบัติความยืดหยุ่น (Elasticity) เพื่อให้อนุภาคสั่นกลับมาที่เดิมได้</p>
+                
+                <h3>2.1 การจำแนกประเภทคลื่น</h3>
+                <ul>
+                    <li><strong>แบ่งตามการใช้ตัวกลาง:</strong> คลื่นกล (ต้องใช้ตัวกลาง เช่น คลื่นน้ำ คลื่นเสียง คลื่นในเส้นเชือก) VS คลื่นแม่เหล็กไฟฟ้า (ไม่ต้องใช้ตัวกลาง เช่น แสง รังสีเอกซ์)</li>
+                    <li><strong>แบ่งตามทิศทางสั่นของอนุภาค:</strong>
+                        <br>- <em>คลื่นตามขวาง (Transverse Wave):</em> อนุภาคสั่นตั้งฉากทิศคลื่นวิ่ง (เช่น คลื่นเชือก, คลื่นน้ำ)
+                        <br>- <em>คลื่นตามยาว (Longitudinal Wave):</em> อนุภาคสั่นขนานทิศคลื่นวิ่ง เกิดช่วงอัดและช่วงขยาย (เช่น คลื่นเสียง, คลื่นสปริง)
+                    </li>
+                </ul>
+
+                <h3>2.2 อัตราเร็วคลื่นและสมการหลัก</h3>
+                <div class="math-block">v = f&lambda; = &lambda;/T = s/t</div>
+                <p>ความเร็วคลื่นกล <span class="math-inline">v</span> จะขึ้นอยู่กับ <strong>คุณสมบัติของตัวกลางเท่านั้น</strong> (เช่น ความตึงเชือก, อุณหภูมิอากาศ, ความหนาแน่นของน้ำ) ถ้าตัวกลางเดิม ความเร็วคลื่นจะคงที่เสมอ ต่อให้เปลี่ยนความถี่ก็ตาม</p>
+
+                <h3>2.3 เจาะลึกสมบัติคลื่น 4 ประการ (เน้นจุดออกสอบบ่อย)</h3>
+                <p><strong>1. การสะท้อน (Reflection)</strong><br>
+                กฎการสะท้อน: มุมตกกระทบ = มุมสะท้อน เสมอ วัดเทียบกับเส้นแนวฉาก (Normal Line)<br>
+                <em>จุดลัดกรณีคลื่นในเส้นเชือก:</em> 
+                <br>- ปลายตรึงแน่น (Fixed End): คลื่นสะท้อนกลับมาเฟสเปลี่ยนไป 180 องศา (กลับหัวกลับหาง)
+                <br>- ปลายอิสระ (Free End): คลื่นสะท้อนกลับมารูปร่างเหมือนเดิม เฟสไม่เปลี่ยน (0 องศา)
+                </p>
+
+                <p><strong>2. การหักเห (Refraction)</strong><br>
+                เกิดขึ้นเมื่อคลื่นเปลี่ยนผ่านตัวกลางต่างชนิดกัน ส่งผลให้ <strong>ความเร็ว (v) และความยาวคลื่น (&lambda;) เปลี่ยนไป แต่ความถี่ (f) คงเดิมเท่ากับแหล่งกำเนิดเสมอ!</strong><br>
+                ใช้กฎของสเนลล์ (Snell's Law) ในการคำนวณ:
+                </p>
+                <div class="math-block">sin(&theta;<sub>1</sub>)/sin(&theta;<sub>2</sub>) = v<sub>1</sub>/v<sub>2</sub> = &lambda;<sub>1</sub>/&lambda;<sub>2</sub> = n<sub>2</sub>/n<sub>1</sub></div>
+                <p><em>ทางลัดจำง่ายคดีคลื่นน้ำ:</em> น้ำลึก (v มาก, &lambda; ยาว, มุม &theta; กว้างขยายออกจากเส้นฉาก) &rarr; น้ำตื้น (v น้อย, &lambda; สั้น, มุม &theta; แคบเบนเข้าหาเส้นฉาก)</p>
+
+                <p><strong>3. การแทรกสอด (Interference)</strong><br>
+                เกิดจากคลื่น 2 ขบวนวิ่งมาเจอกันแล้วรวมกันตามหลักการซ้อนทับ (Superposition Principle) ออกสอบเฉพาะแหล่งกำเนิดอาพันธ์ (Coherent Sources) ที่มีเฟสตรงกัน<br>
+                - <strong>แนวปฏิบัพ (Antinode: A):</strong> คลื่นเสริมกันสูงสุด (สันเจอสัน หรือ ท้องเจอท้อง)
+                <br>- <strong>แนวบัพ (Node: N):</strong> คลื่นหักล้างกันสนิท (สันเจอท้อง)
+                </p>
+                <div class="math-block">
+                    แนวปฏิบัพ (เสริม): |S<sub>1</sub>P - S<sub>2</sub>P| = n&lambda; &nbsp;หรือ&nbsp; d sin&theta; = n&lambda; &nbsp;(n = 0, 1, 2, ...)<br>
+                    แนวบัพ (หักล้าง): |S<sub>1</sub>P - S<sub>2</sub>P| = (n - 0.5)&lambda; &nbsp;หรือ&nbsp; d sin&theta; = (n - 0.5)&lambda; &nbsp;(n = 1, 2, 3, ...)
+                </div>
+
+                <p><strong>4. การเลี้ยวเบน (Diffraction)</strong><br>
+                คือการที่คลื่นสามารถอ้อมผ่านสิ่งกีดขวางหรือเล็ดลอดผ่านช่องแคบ (Slit) ไปด้านหลังได้ตามหลักของฮอยเกนส์ (ทุกลำจุดบนหน้าคลื่นเสมือนเป็นแหล่งกำเนิดคลื่นใหม่)<br>
+                - ถ้าช่องกว้าง <span class="math-inline">d &le; &lambda;</span> คลื่นจะเลี้ยวเบนได้ดีมาก หน้าคลื่นโค้งเป็นวงกลมโดยไม่มีแนวหักล้าง (ไม่มีแนวบัพเลย)<br>
+                - ถ้าช่องกว้าง <span class="math-inline">d &gt; &lambda;</span> คลื่นจะเลี้ยวเบนและเกิดการแทรกสอดเกิดแนวบัพหักล้าง คำนวณหาแนวบัพด้วยสูตร: <span class="math-inline">d sin&theta; = n&lambda;</span>
+                </p>
+            </div>
+        </div>
+
+        <div id="formulas" class="tab-content">
+            <div class="section-card">
+                <h2>คลังสรุปสูตรฉบับเร่งด่วนและเทคนิควิธีลัดขั้นเซียน</h2>
+                <div class="grid-2">
+                    <div class="formula-card">
+                        <h3>สรุปสูตรเต็ม Simple Harmonic Motion</h3>
+                        <ul>
+                            <li><span class="badge-method bg-full">วิธีเต็ม</span> จลนศาสตร์ทั่วไป:
+                                <br><span class="math-inline">x = A sin(&omega;t)</span>
+                                <br><span class="math-inline">v = &omega;A cos(&omega;t) = &plusmn;&omega;&radic;(A<sup>2</sup> - x<sup>2</sup>)</span>
+                                <br><span class="math-inline">a = -&omega;<sup>2</sup>A sin(&omega;t) = -&omega;<sup>2</sup>x</span>
+                            </li>
+                            <li><span class="badge-method bg-full">วิธีเต็ม</span> ความถี่เชิงมุมสปริง: <span class="math-inline">&omega; = &radic;(k/m)</span></li>
+                            <li><span class="badge-method bg-full">วิธีเต็ม</span> ความถี่เชิงมุมลูกตุ้ม: <span class="math-inline">&omega; = &radic;(g/L)</span></li>
+                            <li><span class="badge-method bg-full">วิธีเต็ม</span> พลังงานรวม SHM: <span class="math-inline">E<sub>total</sub> = &frac12;kA<sup>2</sup> = &frac12;mv<sup>2</sup> + &frac12;kx<sup>2</sup></span></li>
+                        </ul>
+                        <h3><span class="badge-method bg-shortcut">วิธีลัด</span> เทคนิคพิชิตโจทย์ SHM</h3>
+                        <ul>
+                            <li><strong>ลัดหา v และ a สูงสุด:</strong> จำทันทีไม่ต้องดิฟ <span class="math-inline">v<sub>max</sub> = &omega;A</span> และ <span class="math-inline">a<sub>max</sub> = &omega;<sup>2</sup>A</span></li>
+                            <li><strong>ลัดสปริงต่ออนุกรม:</strong> สปริงจะนิ่มลง ค่า k รวมลดลง คิดเหมือนตัวต้านทานขนาน &rarr; <span class="math-inline">1/k<sub>รวม</sub> = 1/k<sub>1</sub> + 1/k<sub>2</sub></span></li>
+                            <li><strong>ลัดสปริงต่อขนาน:</strong> สปริงจะแข็งขึ้น ช่วยกันดึง ค่า k รวมเพิ่มขึน &rarr; <span class="math-inline">k<sub>รวม</sub> = k<sub>1</sub> + k<sub>2</sub></span></li>
+                        </ul>
+                    </div>
+
+                    <div class="formula-card">
+                        <h3>สรุปสูตรเต็ม คลื่นกล</h3>
+                        <ul>
+                            <li><span class="badge-method bg-full">วิธีเต็ม</span> สมการพื้นฐาน: <span class="math-inline">v = f&lambda; = &lambda;/T = s/t</span></li>
+                            <li><span class="badge-method bg-full">วิธีเต็ม</span> การหักเหสเนลล์: <span class="math-inline">sin&theta;<sub>1</sub>/sin&theta;<sub>2</sub> = v<sub>1</sub>/v<sub>2</sub> = &lambda;<sub>1</sub>/&lambda;<sub>2</sub></span></li>
+                            <li><span class="badge-method bg-full">วิธีเต็ม</span> แทรกสอดแนวปฏิบัพ (เฟสตรงกัน): <span class="math-inline">|S<sub>1</sub>P - S<sub>2</sub>P| = n&lambda;</span></li>
+                            <li><span class="badge-method bg-full">วิธีเต็ม</span> แทรกสอดแนวบัพ (เฟสตรงกัน): <span class="math-inline">|S<sub>1</sub>P - S<sub>2</sub>P| = (n - 0.5)&lambda;</span></li>
+                        </ul>
+                        <h3><span class="badge-method bg-shortcut">วิธีลัด</span> เทคนิคพิชิตโจทย์คลื่นกล</h3>
+                        <ul>
+                            <li><strong>ลัดหาจำนวนแนวแทรกสอดทั้งหมดระหว่างแหล่งกำเนิด:</strong> นำระยะห่างระว่างแหล่งกำเนิด (<span class="math-inline">d</span>) หารด้วยความยาวคลื่น (<span class="math-inline">&lambda;</span>) ได้ค่าเท่าไหร่ ให้ <strong>"ตัดเศษทศนิยมทิ้งทั้งหมด"</strong> เหลือแต่จำนวนเต็ม <span class="math-inline">N</span>
+                                <br>- จำนวนแนวปฏิบัพ (Antinodes) ทั้งหมด = <span class="math-inline">2N + 1</span> แนว (รวมแนวกลาง A<sub>0</sub>)
+                                <br>- จำนวนแนวบัพ (Nodes) ทั้งหมด = <span class="math-inline">2N</span> แนว
+                            </li>
+                            <li><strong>ลัดเฟสต่างกัน:</strong> ทุกๆ ระยะทางที่เปลี่ยนไปเท่ากับ <span class="math-inline">&lambda;</span> เฟสจะเปลี่ยนไป <span class="math-inline">2&pi;</span> เรเดียน (360 องศา) &rarr; สูตรด่วน <span class="math-inline">&Delta;&phi; = (2&pi; / &lambda;) &times; &Delta;x</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz" class="tab-content">
+            <div class="section-card">
+                <h2>คลังข้อสอบฟิสิกส์ชั้นยอด (40 ข้อเต็ม ทฤษฎี & คำนวณละเอียด)</h2>
+                <p>กดปุ่มเลือกหมวดหมู่เพื่อศึกษาข้อสอบแยกบทหรือทำแบบทดสอบรวมชุดใหญ่</p>
+                
+                <div class="quiz-filter">
+                    <button class="filter-btn active" onclick="filterQuiz('all')">ข้อสอบรวมทั้งหมด (40 ข้อ)</button>
+                    <button class="filter-btn" onclick="filterQuiz('shm-q')">เฉพาะฮาร์มอนิกอย่างง่าย (ข้อ 1-15)</button>
+                    <button class="filter-btn" onclick="filterQuiz('wave-q')">เฉพาะคลื่นกล (ข้อ 16-30)</button>
+                    <button class="filter-btn" onclick="filterQuiz('mix-q')">แนวโจทย์ประยุกต์และข้อสอบเข้ามหาวิทยาลัย (ข้อ 31-40)</button>
+                </div>
+
+                <div id="quiz-container">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 คลังระบบจำลองและองค์ความรู้ฟิสิกส์ ม.5 เอกสารแจกฟรีเพื่อการศึกษาเชิงลึก</p>
+    </footer>
+
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Toggle hint / solution visible status
+        function toggleDisplay(id) {
+            const el = document.getElementById(id);
+            if(el.style.display === 'block') {
+                el.style.display = 'none';
+            } else {
+                el.style.display = 'block';
+            }
+        }
+
+        // 40 questions high-quality data array
+        const questions = [
+            // --- SHM PART (1-15) ---
+            {
+                id: 1,
+                cat: 'shm-q',
+                text: "วัตถุชิ้นหนึ่งเคลื่อนที่แบบฮาร์มอนิกอย่างง่ายตามสมการ x = 0.5 sin(10t) เมตร จงหาแอมพลิจูด ความถี่เชิงมุม และความเร็วสูงสุดของวัตถุขบวนนี้ตามลำดับ",
+                hint: "เทียบฟอร์มสมการมาตรฐาน x = A sin(ωt) แล้วหา v_max จากความสัมพันธ์ด่วน v_max = ωA",
+                sol: "จากโจทย์ x = 0.5 sin(10t) เทียบกับ x = A sin(ωt)<br>1) แอมพลิจูด A = 0.5 เมตร<br>2) ความถี่เชิงมุม ω = 10 เรเดียน/วินาที<br>3) หาความเร็วสูงสุดด้วยวิธีลัด: v_max = ωA = 10 × 0.5 = 5 m/s<br><b>คำตอบ:</b> แอมพลิจูด 0.5 m, ความถี่เชิงมุม 10 rad/s, ความเร็วสูงสุด 5 m/s"
+            },
+            {
+                id: 2,
+                cat: 'shm-q',
+                text: "มวล 2 กิโลกรัม ผูกติดปลายสปริงที่มีค่าคงที่ตัวสปริง k = 200 นิวตัน/เมตร เมื่อดึงมวลออกมาระยะ 0.1 เมตรจากจุดสมดุลแล้วปล่อย จงหาคาบการแกว่งและความเร่งสูงสุดของมวลนี้",
+                hint: "หาคาบแกว่งจาก T = 2π√(m/k) จากนั้นหา ω = √(k/m) และประยุกต์หา a_max = ω²A",
+                sol: "1) คาบแกว่ง T = 2π√(m/k) = 2π√(2/200) = 2π√(1/100) = 2π/10 = π/5 วินาที ≈ 0.63 วินาที<br>2) หา ω = √(k/m) = √(200/2) = 10 rad/s<br>3) หาความเร่งสูงสุดด้วยวิธีลัด: a_max = ω²A = (10)² × 0.1 = 100 × 0.1 = 10 m/s²<br><b>คำตอบ:</b> คาบการแกว่ง π/5 วินาที, ความเร่งสูงสุด 10 m/s²"
+            },
+            {
+                id: 3,
+                cat: 'shm-q',
+                text: "วัตถุหนึ่งเคลื่อนที่แบบ SHM ด้วยความถี่ 5 เฮิรตซ์ และมีแอมพลิจูด 0.2 เมตร จงหาความเร่งของวัตถุขณะที่อยู่ห่างจากจุดสมดุลเป็นระยะ 0.1 เมตร",
+                hint: "หา ω จาก ω = 2πf แล้วใช้สูตรความเร่งทุกตำแหน่ง a = -ω²x (เครื่องหมายลบแสดงทิศสวนทาง)",
+                sol: "1) หาความถี่เชิงมุม ω = 2πf = 2π(5) = 10π rad/s<br>2) หาความเร่งที่ระยะ x = 0.1 เมตร จากสมการ a = -ω²x<br>a = -(10π)² × 0.1 = -100π² × 0.1 = -10π² m/s²<br>ขนาดของความเร่งเท่ากับ 10π² m/s² (ประมาณ 98.7 m/s²)<br><b>คำตอบ:</b> 10π² m/s² หรือ 98.7 m/s² ทิศเข้าสู่จุดสมดุล"
+            },
+            {
+                id: 4,
+                cat: 'shm-q',
+                text: "(เชิงทฤษฎี) เมื่อเพิ่มมวลของวัตถุที่ติดอยู่ปลายสปริงเป็น 4 เท่าของเดิม คาบการแกว่งและความถี่ของระบบจะเปลี่ยนแปลงอย่างไรตามลำดับ",
+                hint: "วิเคราะห์สัดส่วนตัวแปรจากสมการ T = 2π√(m/k) และ f = 1/T",
+                sol: "จาก T = 2π√(m/k) จะเห็นว่า คาบแปรผันตรงกับรากที่สองของมวล (T ∝ √m)<br>เมื่อมวล m' = 4m จะได้ T' = 2π√(4m/k) = 2 &times; 2π&radic;(m/k) = 2T (คาบเพิ่มเป็น 2 เท่า)<br>เนื่องจากความถี่ f = 1/T เมื่อคาบเพิ่มเป็น 2 เท่า ความถี่ f' ย่อมลดลงเหลือ 1/2 เท่าของเดิม (ลดลงครึ่งหนึ่ง)<br><b>คำตอบ:</b> คาบเพิ่มขึ้นเป็น 2 เท่า และความถี่ลดลงเหลือครึ่งหนึ่งของเดิม"
+            },
+            {
+                id: 5,
+                cat: 'shm-q',
+                text: "ลูกตุ้มนาฬิกาอย่างง่ายมีความยาวเชือก L ทำให้แกว่งด้วยคาบ 2 วินาที หากต้องการให้ลูกตุ้มนี้แกว่งช้าลงจนมีคาบเท่ากับ 4 วินาที จะต้องปรับเปลี่ยนความยาวเชือกอย่างไร",
+                hint: "ใช้ความสัมพันธ์คาบลูกตุ้มนาฬิกา T = 2π√(L/g) ตั้งสมการเปรียบเทียบสัดส่วน",
+                sol: "จากสูตร T = 2π√(L/g) จะได้ T ∝ &radic;L หรือ L ∝ T²<br>เปรียบเทียบสองสภาวะ: L₂/L₁ = (T₂/T₁)²<br>แทนค่าคาบที่ต้องการ: L₂/L₁ = (4 / 2)² = 2² = 4<br>ดังนั้น L₂ = 4L₁<br><b>คำตอบ:</b> ต้องเพิ่มความยาวเชือกให้เป็น 4 เท่าของความยาวเดิม"
+            },
+            {
+                id: 6,
+                cat: 'shm-q',
+                text: "สปริงสองเส้นมีค่าคงที่สปริง k₁ = 300 N/m และ k₂ = 600 N/m นำมาต่อกันแบบอนุกรมแล้วแขวนมวล 2 kg จงหาคาบการแกว่งสั่นของระบบนี้เมื่อปล่อยให้เคลื่อนที่แบบ SHM",
+                hint: "หา k รวมแบบอนุกรมด้วยวิธีลัดเหมือนสูตรขนานของตัวต้านทาน 1/k_รวม = 1/k₁ + 1/k₂ แล้วคิดคาบปกติ",
+                sol: "1) หาค่า k รวมแบบอนุกรม: 1/k_รวม = 1/300 + 1/600 = (2+1)/600 = 3/600 &rarr; k_รวม = 200 N/m<br>2) หาคาบการแกว่งสั่น: T = 2π√(m/k_รวม) = 2π√(2/200) = 2π√(1/100) = 2π/10 = π/5 วินาที<br><b>คำตอบ:</b> π/5 วินาที (หรือประมาณ 0.63 วินาที)"
+            },
+            {
+                id: 7,
+                cat: 'shm-q',
+                text: "จากโจทย์ข้อ 6 ถ้านำสปริงทั้งสองเส้น (k₁ = 300 N/m, k₂ = 600 N/m) เปลี่ยนมาต่อกันแบบ 'ขนาน' แล้วแขวนมวล 2 กิโลกรัมเท่าเดิม ระบบจะแกว่งด้วยความถี่เชิงมุม (ω) เท่าใด",
+                hint: "วิธีลัดสปริงขนานจับ k บวกกันได้เลย k_รวม = k₁ + k₂ แล้วแทนใน ω = √(k/m)",
+                sol: "1) หา k รวมแบบขนาน: k_รวม = k₁ + k₂ = 300 + 600 = 900 N/m (สปริงแข็งขึ้นมาก)<br>2) หาความถี่เชิงมุม ω = √(k_รวม/m) = √(900/2) = √450 = 15&radic;2 rad/s ≈ 21.21 rad/s<br><b>คำตอบ:</b> 15&radic;2 เรเดียน/วินาที"
+            },
+            {
+                id: 8,
+                cat: 'shm-q',
+                text: "วัตถุมวล 0.5 กิโลกรัม เคลื่อนที่แบบฮาร์มอนิกอย่างง่ายด้วยแอมพลิจูด 0.4 เมตร และความถี่เชิงมุม 5 rad/s พลังงานกลรวมทั้งหมดในระบบมีค่ากี่จูล",
+                hint: "พลังงานกลรวมคงที่เสมอหาได้จากสูตร E = ½m(v_max)² หรือ E = ½k A² พึงคิดด่วนจาก v_max = ωA",
+                sol: "1) วิธีลัดหาความเร็วสูงสุดก่อน: v_max = ωA = 5 × 0.4 = 2 m/s<br>2) พลังงานรวมของระบบคือพลังงานจลน์สูงสุด ณ จุดสมดุล: E_total = ½m(v_max)²<br>แทนค่า: E_total = ½ × 0.5 × (2)² = 0.25 × 4 = 1 จูล<br><b>คำตอบ:</b> พลังงานกลรวมมีค่าเท่ากับ 1 จูล"
+            },
+            {
+                id: 9,
+                cat: 'shm-q',
+                text: "วัตถุแกว่งแบบ SHM มีแอมพลิจูด A ณ ตำแหน่งที่วัตถุมีการกระจัด x เป็นเท่าใด พลังงานจลน์ของวัตถุจึงจะเท่ากับพลังงานศักย์พอดี",
+                hint: "ตั้งสมการ พลังงานรวม = พลังงานจลน์ + พลังงานศักย์ โดยให้ E_k = E_p จะได้ E_total = 2 E_p",
+                sol: "จากกฎอนุรักษ์พลังงาน: E_total = E_k + E_p<br>เงื่อนไขโจทย์ต้องการจุดที่ E_k = E_p แทนลงไปย่อมได้: E_total = E_p + E_p = 2E_p<br>สูตรพลังงาน: ½kA² = 2 &times; (½kx²)<br>ตัดพจน์ร่วม ½k ทั้งสองข้างออก: A² = 2x² &rarr; x² = A²/2 &rarr; x = &plusmn;A/&radic;2<br><b>คำตอบ:</b> ณ ตำแหน่งการกระจัด x = A/&radic;2 หรือประมาณ 0.707 ของแอมพลิจูด"
+            },
+            {
+                id: 10,
+                cat: 'shm-q',
+                text: "อนุภาคหนึ่งทำ SHM มีความเร็วสูงสุด 10 m/s และมีความเร่งสูงสุด 50 m/s² จงหาความถี่เชิงมุม (ω) และแอมพลิจูด (A) ของการเคลื่อนที่นี้",
+                hint: "ใช้ความสัมพันธ์ด่วนของค่าวิกฤต v_max = ωA และ a_max = ω²A จับสมการหารกันเพื่อตัดแปรตัวแปร A",
+                sol: "ให้ v_max = ωA = 10  --- (สมการ 1)<br>ให้ a_max = ω²A = 50 --- (สมการ 2)<br>นำ (สมการ 2) หารด้วย (สมการ 1) : (ω²A) / (ωA) = 50 / 10 &rarr; ω = 5 rad/s<br>นำ ω = 5 แทนกลับในสมการ 1: 5 &times; A = 10 &rarr; A = 2 เมตร<br><b>คำตอบ:</b> ความถี่เชิงมุม 5 rad/s และ แอมพลิจูด 2 เมตร"
+            },
+            {
+                id: 11,
+                cat: 'shm-q',
+                text: "ถ้าวัตถุชิ้นหนึ่งขยับแบบ SHM รอบตำแหน่งสมดุล มีอัตราเร็วสูงสุดอยู่ที่ 6 m/s จงหาอัตราเร็วของวัตถุ ณ ตำแหน่งที่ขยับออกไปเป็นระยะครึ่งหนึ่งของแอมพลิจูด (x = A/2)",
+                hint: "ใช้สูตรความเร็วทุกตำแหน่ง v = ω√(A² - x²) ร่วมกับข้อมููลพจน์ ωA = v_max",
+                sol: "จากสูตรทั่วไป: v = ω√(A² - x²)<br>แทนค่า x = A/2 ลงไป: v = ω&radic;(A² - (A/2)²) = ω&radic;(A² - A²/4) = ω&radic;(3A²/4) = &radic;3/2 &times; (ωA)<br>เนื่องจาก ωA = v_max = 6 m/s ย่อมได้: v = (&radic;3 / 2) &times; 6 = 3&radic;3 m/s ≈ 5.20 m/s<br><b>คำตอบ:</b> 3&radic;3 เมตรต่อวินาที"
+            },
+            {
+                id: 12,
+                cat: 'shm-q',
+                text: "(เชิงทฤษฎี) ถ้าเรานำนาฬิกาแบบลูกตุ้มดิ่ง (Pendulum Clock) เดินทางไปใช้ชีวิตอยู่บนดวงจันทร์ซึ่งมีค่าแรงโน้มถ่วง g น้อยกว่าโลก 6 เท่า นาฬิกาเรือนนี้จะเดินเร็วขึ้นหรือช้าลง และช้า/เร็วไปกี่เท่า",
+                hint: "วิเคราะห์จาก T = 2π√(L/g) เมื่อ g ลดลง คาบ T จะเพิ่มขึ้นหรือลดลงส่งผลอย่างไรกับเวลา",
+                sol: "จาก T = 2π√(L/g) คาบแปรผกผันกับรากที่สองของ g (T ∝ 1/&radic;g)<br>บนดวงจันทร์ g_moon = g/6 ทำให้ คาบใหม่ T' = 2π&radic;(L / (g/6)) = &radic;6 &times; T<br>เนื่องจากคาบเวลา (เวลาต่อการแกว่ง 1 รอบ) เพิ่มขึ้นถึง &radic;6 เท่า แปลว่านาฬิกาต้องใช้เวลาแกว่งนานขึ้นต่อรอบ จึงส่งผลให้ <b>นาฬิกาเดินช้าลง</b><br><b>คำตอบ:</b> เดินช้าลง โดยใช้เวลาแกว่งนานขึ้นเป็น &radic;6 เท่าของเดิม"
+            },
+            {
+                id: 13,
+                cat: 'shm-q',
+                text: "วัตถุเคลื่อนที่แบบ SHM แอมพลิจูด 0.1 เมตร มีความถี่ 2 Hz ณ จุดเริ่มต้น (t=0) วัตถุอยู่ที่ตำแหน่งสมดุลพอดี จงหาการกระจัดของวัตถุเมื่อเวลาผ่านไป 1/12 วินาที",
+                hint: "เขียนสมการเต็ม x = A sin(ωt) โดยแปลง f เป็น ω = 2πf ก่อนแทนค่าเวลา t",
+                sol: "1) หา ω = 2πf = 2&pi;(2) = 4&pi; rad/s<br>2) ตั้งสมการกระจัด x(t) = A sin(ωt) &rarr; x(t) = 0.1 sin(4&pi;t)<br>3) แทนค่า t = 1/12 วินาที: x = 0.1 sin(4&pi; &times; 1/12) = 0.1 sin(&pi;/3)<br>มุมมุม &pi;/3 เรเดียน คือ 60 องศา ค่า sin(60&deg;) = &radic;3/2<br>x = 0.1 &times; (&radic;3/2) = 0.05&radic;3 เมตร ≈ 0.086 เมตร<br><b>คำตอบ:</b> 0.05&radic;3 เมตร (ประมาณ 8.6 เซนติเมตร)"
+            },
+            {
+                id: 14,
+                cat: 'shm-q',
+                text: "แขวนมวล m กับสปริงเบาเส้นหนึ่งทำให้สปริงยืดออก 0.098 เมตรในแนวดิ่งในสภาวะสมดุลนิ่ง จากนั้นลองดึงมวลลงมาอีกเล็กน้อยแล้วปล่อยให้แกว่งสั่นขึ้นลง จงหาความถี่ของการแกว่งนี้ (กำหนด g = 9.8 m/s²)",
+                hint: "ที่จุดสมดุลแนวดิ่ง แรงสปริงเท่ากับแรงโน้มถ่วง mg = kx_ยืด ดึงสัดส่วน k/m = g/x_ยืด มาเข้าสูตรด่วน ω",
+                sol: "จากสภาพสมดุลแนวดิ่ง: mg = k &times; &Delta;x &rarr; k/m = g / &Delta;x<br>แทนค่า: k/m = 9.8 / 0.098 = 100 s⁻²<br>สูตรความถี่เชิงมุมการแกว่งสปริงคือ ω = &radic;(k/m) = &radic;100 = 10 rad/s<br>หาความถี่ธรรมดา (f) จาก ω = 2&pi;f &rarr; f = ω / 2&pi; = 10 / 2&pi; = 5/&pi; Hz ≈ 1.59 Hz<br><b>คำตอบ:</b> 5/&pi; เฮิรตซ์"
+            },
+            {
+                id: 15,
+                cat: 'shm-q',
+                text: "(เชิงทฤษฎี) ในการเคลื่อนที่แบบฮาร์มอนิกอย่างง่าย ปริมาณใดต่อไปนี้ที่มีทิศทางชี้ไปในทางเดียวกันเสมอไม่ว่าวัตถุจะขยับไปอยู่ ณ ตำแหน่งใดก็ตาม",
+                hint: "ลองนึกถึงกฎของนิวตัน F = ma แรงดึงกลับชี้ไปทางไหน ความเร่งก็ชี้ไปทางนั้น",
+                sol: "ตามกฎข้อที่สองของนิวตัน แรงลัพธ์และความเร่งจะมีทิศทางเดียวกันเสมอ (<b style='color:red;'>F</b> = m<b style='color:red;'>a</b>)<br>สำหรับ SHM แรงดึงกลับจะมีทิศพุ่งเข้าหาจุดสมดุลเสมอเพื่อพยายามดึงวัตถุกดกลับมา ดังนั้นความเร่งจึงมีทิศพุ่งเข้าหาจุดสมดุลด้วยตลอดเวลา (ตรงข้ามกับการกระจัด x เสมอ)<br><b>คำตอบ:</b> แรงดึงกลับ (Restoring Force) และ ความเร่ง (Acceleration)"
+            },
+
+            // --- WAVE PART (16-30) ---
+            {
+                id: 16,
+                cat: 'wave-q',
+                text: "คลื่นผิวน้ำขบวนหนึ่งเคลื่อนที่ขยับไปได้ระยะทาง 12 เมตรในเวลา 3 วินาที ถ้าวัดระยะห่างจากสันคลื่นที่ 1 ถึงสันคลื่นที่ 5 ได้ความยาวรวม 4 เมตร จงหาความถี่ของคลื่นน้ำขบวนนี้",
+                hint: "หาอัตราเร็วคลื่น v จาก s/t จากนั้นหาระยะความยาวคลื่น λ (ระวัง! สันคลื่นที่ 1 ถึง 5 มีทั้งหมดกี่ช่วงคลื่น?)",
+                sol: "1) หาอัตราเร็วคลื่น v = s/t = 12 / 3 = 4 m/s<br>2) หาความยาวคลื่น &lambda;: จากสันคลื่นที่ 1 ถึงสันคลื่นที่ 5 มีระยะห่างทั้งหมด 5 - 1 = 4 ช่วงคลื่น (4&lambda;)<br>โจทย์บอก 4&lambda; = 4 เมตร ย่อมได้ &lambda; = 1 เมตร<br>3) หาความถี่จาก v = f&lambda; &rarr; 4 = f &times; 1 &rarr; f = 4 Hz<br><b>คำตอบ:</b> ความถี่คลื่นมีค่าเท่ากับ 4 เฮิรตซ์"
+            },
+            {
+                id: 17,
+                cat: 'wave-q',
+                text: "คลื่นกลมีความถี่ 500 เฮิรตซ์ อัตราเร็วคลื่น 300 เมตรต่อวินาที จุดสองจุดบนคลื่นที่อยู่ห่างกันเป็นระยะ 15 เซนติเมตร จะมีเฟสต่างกันกี่เรเดียน",
+                hint: "หาความยาวคลื่น λ ก่อน จากนั้นใช้วิธีลัดแปลงระยะทางเป็นเฟส: Δ&phi; = (2π / &lambda;) &times; Δx",
+                sol: "1) หาความยาวคลื่น &lambda; = v/f = 300 / 500 = 0.6 เมตร = 60 เซนติเมตร<br>2) หาระยะห่างเฟสด้วยวิธีลัดสูตรส่วนสัด: &Delta;&phi; = (2&pi; / &lambda;) &times; &Delta;x<br>แทนค่าระยะห่าง &Delta;x = 15 cm และ &lambda; = 60 cm &rarr; &Delta;&phi; = 2&pi; &times; (15 / 60) = 2&pi; &times; (1/4) = &pi;/2 เรเดียน<br><b>คำตอบ:</b> เฟสต่างกัน &pi;/2 เรเดียน (หรือ 90 องศา)"
+            },
+            {
+                id: 18,
+                cat: 'wave-q',
+                text: "คลื่นดลในเส้นเชือกเคลื่อนที่จากซ้ายไปขวา เมื่อไปกระทบจุดปลายตึงแน่นยึดตรึงอยู่กับกำแพง คลื่นจะสะท้อนกลับในลักษณะใด",
+                hint: "สมบัติการสะท้อนปลายตรึง เฟสเปลี่ยนไปกี่องศา รูปร่างสมมาตรพลิกกลับอย่างไร",
+                sol: "เมื่อคลื่นในเส้นเชือกสะท้อนที่ปลายตรึงแน่น ตัวกำแพงจะออกแรงปฏิกิริยาสวนกลับในทิศตรงข้ามกับที่คลื่นส่งแรงมากด ส่งผลให้คลื่นสะท้อนมี <b>เฟสเปลี่ยนไป 180 องศา (หรือ &pi; เรเดียน)</b> รูปร่างคลื่นจะกลับหัวจากบนลงล่างและวิ่งกลับจากขวาไปซ้าย<br><b>คำตอบ:</b> สะท้อนกลับโดยมีเฟสเปลี่ยนไป 180 องศา (คลื่นกลับหัว)"
+            },
+            {
+                id: 19,
+                cat: 'wave-q',
+                text: "คลื่นน้ำเคลื่อนที่จากบริเวณน้ำลึกเข้าสู่น้ำตื้น โดยหน้าคลื่นตกกระทบทำมุม 45 องศากับแนวรอยต่อ ถ้าอัตราเร็วคลื่นในน้ำลึกเป็น 2 เท่าของอัตราเร็วคลื่นในน้ำตื้น จงหามุมหักเหที่เกิดขึ้นในน้ำตื้น",
+                hint: "ใช้กฎของสเนลล์ sinθ₁/sinθ₂ = v₁/v₂ กำหนดให้ v₁ = 2v₂",
+                sol: "จากกฎของสเนลล์: sin&theta;₁ / sin&theta;₂ = v₁ / v₂<br>โจทย์กำหนด &theta;₁ = 45&deg; และ v₁ = 2v₂ ย่อมได้:<br>sin(45&deg;) / sin&theta;₂ = 2v₂ / v₂ = 2<br>(&radic;2/2) / sin&theta;₂ = 2 &rarr; sin&theta;₂ = &radic;2 / 4 ≈ 0.353<br>&theta;₂ = arcsin(&radic;2 / 4)<br><b>คำตอบ:</b> มุมหักเหมีค่าเท่ากับ arcsin(&radic;2 / 4) หรือประมาณ 20.7 องศา"
+            },
+            {
+                id: 20,
+                cat: 'wave-q',
+                text: "คลื่นน้ำเคลื่อนที่จากเขตน้าตื้นที่มีความยาวคลื่น 3 เซนติเมตร ไปสู่เขตน้าลึก โดยมุมตกกระทบเท่ากับ 30 องศา และมุมหักเหเท่ากับ 60 องศา จงหาความยาวคลื่นในเขตน้าลึก",
+                hint: "ตั้งกฎของสเนลล์คู่ความยาวคลื่น sinθ₁/sinθ₂ = λ₁/λ₂ แทนค่าระวังตัวแปร 1=ตื้น 2=ลึก",
+                sol: "ใช้สูตร: sin&theta;₁ / sin&theta;₂ = &lambda;₁ / &lambda;₂<br>แทนค่า: sin(30&deg;) / sin(60&deg;) = 3 / &lambda;₂<br>(1/2) / (&radic;3/2) = 3 / &lambda;₂ &rarr; 1/&radic;3 = 3 / &lambda;₂ &rarr; &lambda;₂ = 3&radic;3 cm ≈ 5.196 cm<br><b>คำตอบ:</b> ความยาวคลื่นในเขตน้าลึกเท่ากับ 3&radic;3 เซนติเมตร"
+            },
+            {
+                id: 21,
+                cat: 'wave-q',
+                text: "แหล่งกำเนิดอาพันธ์เฟสตรงกัน 2 แหล่ง ห่างกัน 10 เซนติเมตร ให้คลื่นความยาวคลื่น 2 เซนติเมตร จงใช้วิธีลัดคำนวณหาจำนวนแนวปฏิบัพ (Antinodes) ทั้งหมดที่จะเกิดขึ้นระหว่างแหล่งกำเนิดทั้งสองนี้",
+                hint: "สูตรลัด: นำ d/λ ตัดทศนิยมทิ้งเหลือจำนวนเต็ม N แล้วเข้าฟอร์ม 2N + 1",
+                sol: "1) กำหนดระยะห่าง d = 10 cm, ความยาวคลื่น &lambda; = 2 cm<br>2) คำนวณค่าสัดส่วน: d/&lambda; = 10 / 2 = 5 (ได้จำนวนเต็มพอดี ไม่มีเศษทศนิยมให้ปัดทิ้ง)<br>ดังนั้น N = 5 ซึ่งแปลว่าเกิดแนวปฏิบัพข้างละ 5 แนว<br>3) วิธีลัดจำนวนแนวปฏิบัพทั้งหมด = 2N + 1 = 2(5) + 1 = 11 แนว (รวมแนวกลาง A₀)<br><b>คำตอบ:</b> เกิดแนวปฏิบัพทั้งหมด 11 แนว"
+            },
+            {
+                id: 22,
+                cat: 'wave-q',
+                text: "จากโจทย์ข้อ 21 (แหล่งกำเนิดห่างกัน 10 cm, &lambda; = 2 cm) จงหาจำนวนแนว 'บัพ' (Nodes) ทั้งหมดที่เกิดขึ้นในระบบแทรกสอดนี้",
+                hint: "สูตรลัดแนวบัพกรณี d/λ ลงตัวหรือมีเศษทศนิยม ให้ใช้สูตร จำนวนแนวบัพทั้งหมด = 2N",
+                sol: "จากข้อที่แล้ว ค่า N ที่ได้จากการคำนวณด่วน d/&lambda; = 10/2 = 5<br>สูตรด่วนจำนวนแนวบัพทั้งหมดที่จะอยู่ระหว่างแหล่งกำเนิดสองฝั่งคือ = 2N<br>แทนค่า: 2 &times; 5 = 10 แนว<br><b>คำตอบ:</b> เกิดแนวบัพหักล้างทั้งหมด 10 แนว"
+            },
+            {
+                id: 23,
+                cat: 'wave-q',
+                text: "จุด P อยู่บนแนวการแทรกสอดของคลื่นจากแหล่งกำเนิดอาพันธ์เฟสตรงกันคู่หนึ่ง ห่างจากแหล่งกำเนิดที่หนึ่ง 15 เซนติเมตร ห่างจากแหล่งกำเนิดที่สอง 24 เซนติเมตร ถ้าความยาวคลื่นเท่ากับ 3 เซนติเมตร จุด P จะอยู่บนแนวบัพหรือปฏิบัพที่เท่าใด",
+                hint: "หาผลต่างระยะทาง |S₁P - S₂P| แล้วทดสอบหารด้วย λ ดูว่าลงตัวเป็นจำนวนเต็มหรือครึ่งทศนิยม",
+                sol: "1) หาผลต่างระยะทาง (Path Difference): |S₁P - S₂P| = |15 - 24| = 9 เซนติเมตร<br>2) นำความยาวคลื่น &lambda; = 3 cm ไปหาร: 9 / 3 = 3 (ได้เลขจำนวนเต็มลงตัวพอดี)<br>เนื่องจากหารลงตัวเป็นจำนวนเต็ม n = 3 จึงสรุปได้ทันทีว่าเป็นแนวปฏิบัพตามเงื่อนไข |S₁P - S₂P| = n&lambda;<br><b>คำตอบ:</b> จุด P อยู่บนแนวปฏิบัพที่ 3 (A₃)"
+            },
+            {
+                id: 24,
+                cat: 'wave-q',
+                text: "ถ้ารูระยะห่างผลต่างระหว่างจุด Q ไปยังแหล่งกำเนิดเฟสตรงกันสองแหล่งคือ |S₁Q - S₂Q| = 10.5 เซนติเมตร โดยมีความยาวคลื่นเท่ากับ 3 เซนติเมตร จุด Q จะตั้งอยู่บนแนวบัพหรือปฏิบัพที่เท่าใด",
+                hint: "หาระยะ Path Difference หารด้วย λ ดูว่าลงท้ายด้วย .5 หรือไม่ เพื่อเทียบเคียงแนวบัพ (n - 0.5)λ",
+                sol: "1) ผลต่างระยะทางเท่ากับ 10.5 cm<br>2) นำ &lambda; = 3 cm ไปหาร: 10.5 / 3 = 3.5<br>ผลลัพธ์ลงท้ายด้วยเศษ .5 แสดงว่าเป็นแนวบัพ (หักล้าง)<br>ตั้งสมการ: 3.5 = n - 0.5 &rarr; n = 4<br>ดังนั้น จุด Q อยู่บนแนวบัพที่ 4พอดี<br><b>คำตอบ:</b> จุด Q อยู่บนแนวบัพที่ 4 (N₄)"
+            },
+            {
+                id: 25,
+                cat: 'wave-q',
+                text: "แหล่งกำเนิดคลื่นอาพันธ์ 2 แหล่ง วางห่างกันเป็นระยะ d บนแนวเส้นตรงหนึ่ง เกิดแนวบัพที่ 2 ทำมุมเบนออกจากแนวกลางขนานทแยงไป 30 องศา ถ้าระบบนี้ปล่อยความยาวคลื่น &lambda; = 4 cm จงหาระยะห่าง d ระหว่างแหล่งกำเนิดคู่นี้",
+                hint: "ใช้สูตรแนวบัพด้านมุม: d sinθ = (n - 0.5)λ แทนค่า n=2, θ=30°",
+                sol: "จากสูตรแนวบัพ: d sin&theta; = (n - 0.5)&lambda;<br>แทนค่า n = 2 (บัพที่ 2), &theta; = 30&deg;, &lambda; = 4 cm<br>d sin(30&deg;) = (2 - 0.5) &times; 4<br>d &times; (1/2) = 1.5 &times; 4 = 6<br>d = 6 &times; 2 = 12 เซนติเมตร<br><b>คำตอบ:</b> ระยะห่างระหว่างแหล่งกำเนิดคู่มีค่าเท่ากับ 12 เซนติเมตร"
+            },
+            {
+                id: 26,
+                cat: 'wave-q',
+                text: "ส่งคลื่นผิวน้ำผ่านช่องแคบเดี่ยว (Single Slit) ที่มีความกว้างช่องช่อง 5 เซนติเมตร พบว่าเกิดแนวหักล้าง (แนวบัพ) แนวแรกเบนทำมุมจากแนวกลางขนานไป 30 องศา จงหาความยาวคลื่นของคลื่นน้ำขบวนนี้",
+                hint: "การเลี้ยวเบนผ่านช่องแคบเดี่ยว แนวบัพ (หักล้าง) คำนวณจาก d sinθ = nλ แทนค่า n=1 สำหรับแนวแรก",
+                sol: "จากสูตรแนวบัพของการเลี้ยวเบนช่องแคบเดี่ยว: d sin&theta; = n&lambda;<br>แทนค่าโจทย์: d = 5 cm, &theta; = 30&deg;, n = 1 (แนวแรก)<br>5 &times; sin(30&deg;) = 1 &times; &lambda;<br>5 &times; (1/2) = &lambda; &rarr; &lambda; = 2.5 เซนติเมตร<br><b>คำตอบ:</b> ความยาวคลื่นของคลื่นน้ำเท่ากับ 2.5 เซนติเมตร"
+            },
+            {
+                id: 27,
+                cat: 'wave-q',
+                text: "(เชิงทฤษฎี) หากเราต้องการให้คลื่นน้ำเคลื่อนที่ผ่านสิ่งกีดขวางไปด้านหลังได้ดีที่สุดโดยไม่เกิดแนวแถบมืดหรือแนวหักล้างขึ้นเลย สภาพความกว้างของช่องแคบ (d) ควรสัมพันธ์กับความยาวคลื่น (&lambda;) อย่างไร",
+                hint: "นึกถึงหลักเกณฑ์ข้อจำกัดของการเลี้ยวเบนคลื่นวงกลมที่สมบูรณ์แบบ",
+                sol: "การเลี้ยวเบนจะสมบูรณ์แบบที่สุดเสมือนจุดกำเนิดคลื่นวงกลมใหม่โดยไม่มีหน้าคลื่นแทรกสอดหักล้างเกิดขึ้น ก็ต่อเมื่อความกว้างของสลิตหรือช่องเปิดนั้นมีขนาดเล็กกว่าหรือเท่ากับความยาวคลื่น (d &le; &lambda;) ทำให้ช่องนั้นทำหน้าที่เป็นแหล่งกำเนิดคลื่นดลจุดเดียวตามหลักฮอยเกนส์ได้ยอดเยี่ยม<br><b>คำตอบ:</b> ความกว้างช่องแคบต้องน้อยกว่าหรือเท่ากับความยาวคลื่น (d &le; &lambda;)"
+            },
+            {
+                id: 28,
+                cat: 'wave-q',
+                text: "คลื่นดลขบวนหนึ่งสั่นด้วยความถี่ 20 เฮิรตซ์ เคลื่อนที่ในลวดเหล็กตึงยาววัดระยะทางได้ 100 เมตรในเวลา 2 วินาที จงหาความยาวคลื่นของคลื่นกลในเส้นลวดเส้นนี้",
+                hint: "หาความเร็วคลื่น v จากระยะทางส่วนเวลาปกติ s/t แล้วหาความยาวคลื่นจาก v = fλ",
+                sol: "1) หาความเร็วคลื่น: v = s/t = 100 / 2 = 50 m/s<br>2) หาความยาวคลื่น: จากสูตร v = f&lambda; &rarr; 50 = 20 &times; &lambda;<br>&lambda; = 50 / 20 = 2.5 เมตร<br><b>คำตอบ:</b> ความยาวคลื่นมีค่าเท่ากับ 2.5 เมตร"
+            },
+            {
+                id: 29,
+                cat: 'wave-q',
+                text: "คลื่นต่อเนื่องขบวนหนึ่งมีสมการรูปคลื่นขยับตามเวลา ณ ตำแหน่งการกระจัดใดๆ ปรากฏรูปสันคลื่นผ่านหน้าผู้สังเกตไป 10 ลูกคลื่นในทุกๆ 5 วินาที คลื่นนี้มีคาบเวลา (T) เท่าใด",
+                hint: "หาความถี่ f (จำนวนลูกต่อวินาที) ก่อน แล้วกลับเศษส่วนหาคาบเวลา T = 1/f",
+                sol: "1) หาความถี่ f = จำนวนรอบ / เวลา = 10 / 5 = 2 Hz (รอบต่อวินาที)<br>2) คาบการแกว่ง T = 1/f = 1 / 2 = 0.5 วินาทีต่อรอบ<br><b>คำตอบ:</b> คาบเวลาของคลื่นมีค่าเท่ากับ 0.5 วินาที"
+            },
+            {
+                id: 30,
+                cat: 'wave-q',
+                text: "(เชิงทฤษฎี) เมื่อคลื่นเดินทางจากตัวกลางที่ 1 ไปยังตัวกลางที่ 2 แล้วเกิดปรากฏการณ์มุมวิกฤต (Critical Angle) ข้อมูลใดระบุทิศทางตัวกลางและคุณลักษณะมุมหักเหได้ถูกต้องที่สุด",
+                hint: "มุมวิกฤตเกิดขึ้นเมื่อคลื่นหักเหแล้วเบนกวาดทำมุมกี่องศากับแนวฉาก และเกิดจากน้ำตื้นไปลึก หรือ ลึกไปตื้น",
+                sol: "มุมวิกฤต (&theta;_c) คือมุมตกกระทบที่ทำให้มุมหักเหในตัวกลางที่สองกางโตเท่ากับ 90 องศาพอดี (แนวหน้าคลื่นขนานไปตามรอยต่อ) ปรากฏการณ์นี้จะเกิดได้ต่อเมื่อคลื่นเดินทางจาก <b>ตัวกลางที่มีความเร็วต่ำ (เช่น น้ำตื้น) ไปยังตัวกลางที่มีความเร็วสูงกว่า (เช่น น้ำลึก)</b> เท่านั้น เพราะมุมต้องกางเบนออกห่างจากเส้นแนวฉากจนแตะ 90 องศาได้<br><b>คำตอบ:</b> เกิดจากตัวกลางความเร็วต่ำไปสูง และมุมหักเหเท่ากับ 90 องศา"
+            },
+
+            // --- MIXED & HIGH LEVEL PART (31-40) ---
+            {
+                id: 31,
+                cat: 'mix-q',
+                text: "ลูกสูบเครื่องจักรชิ้นหนึ่งสั่นขึ้นลงแบบ SHM ด้วยความถี่ 10 Hz ขับเคลื่อนผิวน้ำให้เกิดคลื่นต่อเนื่องแผ่ออกไปโดยมีระยะห่างระหว่างสันคลื่นที่ 1 ถึงสันคลื่นที่ 4 เท่ากับ 60 เซนติเมตร จงหาอัตราเร็วคลื่นผิวน้ำนี้",
+                hint: "รวมมโนทัศน์: ความถี่การสั่น SHM ของเครื่องจักร = ความถี่คลื่นน้ำ ระยะสันคลื่น 1 ถึง 4 คือ 3λ หา v ด่วน",
+                sol: "1) ความถี่ f = 10 Hz<br>2) หาระยะช่วงคลื่น: สันคลื่นที่ 1 ถึง 4 คือ 4 - 1 = 3&lambda; = 60 cm &rarr; &lambda; = 20 cm = 0.2 เมตร<br>3) หาอัตราเร็วคลื่นผสมสูตร: v = f&lambda; = 10 &times; 0.2 = 2 m/s<br><b>คำตอบ:</b> อัตราเร็วของคลื่นผิวน้ำเท่ากับ 2 เมตรต่อวินาที"
+            },
+            {
+                id: 32,
+                cat: 'mix-q',
+                text: "วัตถุมวล 0.1 kg ติดสปริงแกว่ง SHM บนพื้นราบลื่น มีพลังงานกลรวมคงที่ 0.2 จูล และแอมพลิจูดสั่น 0.2 เมตร จงหาความถี่เชิงมุมการสั่นของวัตถุที่เป็นต้นกำเนิดคลื่นนี้",
+                hint: "แกะสูตรพลังงานรวม E = ½m(v_max)² นำมาหา v_max แล้วถอดค่า ω จากสูตรลัด v_max = ωA",
+                sol: "1) พลังงานรวม E = ½m(v_max)² &rarr; 0.2 = ½ &times; 0.1 &times; (v_max)²<br>0.2 = 0.05 &times; (v_max)² &rarr; (v_max)² = 0.2 / 0.05 = 4 &rarr; v_max = 2 m/s<br>2) ใช้สูตรด่วนความเร็วสูงสุด: v_max = ωA &rarr; 2 = ω &times; 0.2<br>ω = 2 / 0.2 = 10 rad/s<br><b>คำตอบ:</b> ความถี่เชิงมุมของต้นกำเนิดเท่ากับ 10 เรเดียน/วินาที"
+            },
+            {
+                id: 33,
+                cat: 'mix-q',
+                text: "คลื่นเส้นเชือกยาวเส้นหนึ่งถูกกระตุ้นสั่นอนุภาคให้ทำ SHM พบว่า ณ ตำแหน่งหนึ่ง อนุภาคใช้เวลา 0.1 วินาทีในการขยับจากตำแหน่งสูงสุด (สันคลื่น) ลงมายังตำแหน่งสมดุล จงหาความถี่คลื่นในเส้นเชือกนี้",
+                hint: "วิเคราะห์ระยะเวลา SHM: จากจุดสูงสุดลงมาจุดสมดุลคิดเป็นเศษส่วนเท่าใดของ 1 รอบวงกลมเต็ม? (1/4 ของคาบ)",
+                sol: "ในการเคลื่อนที่แบบ SHM ครบ 1 รอบเต็ม วัตถุจะเดินจากสมดุล &rarr; บนสุด &rarr; สมดุล &rarr; ล่างสุด &rarr; สมดุล<br>การเดินทางจากตำแหน่งบนสุดลงมาจุดสมดุลคิดเป็นระยะเวลาเพียง 1 ใน 4 ของคาบทั้งหมด (T/4)<br>โจทย์ระบุ T/4 = 0.1 วินาที ย่อมได้ คาบเต็ม T = 0.4 วินาที<br>ความถี่ f = 1/T = 1 / 0.4 = 2.5 Hz<br><b>คำตอบ:</b> ความถี่คลื่นเท่ากับ 2.5 เฮิรตซ์"
+            },
+            {
+                id: 34,
+                cat: 'mix-q',
+                text: "เชือกสองเส้นขนาดใหญ่เส้นผ่านศูนย์กลางต่างกันผูกต่อกันอยู่ ส่งคลื่นความยาวคลื่น &lambda;₁ = 4 ซม. วิ่งจากเชือกเส้นเล็ก (ตัวกลาง 1) ไปยังเชือกเส้นใหญ่ (ตัวกลาง 2) ปรากฏว่าอัตราเร็วคลื่นลดลงเหลือครึ่งหนึ่งของเดิม จงหาความยาวคลื่นในเชือกเส้นใหญ่",
+                hint: "การเปลี่ยนตัวกลาง ความถี่ f คงที่ ใช้สมการหักเหคู่ความยาวคลื่นกับความเร็วด่วนตรงๆ",
+                sol: "เนื่องจากคลื่นเคลื่อนผ่านรอยต่อเชือกความถี่ f ย่อมคงเดิมเสมอ<br>สูตร: &lambda;₁ / &lambda;₂ = v₁ / v₂<br>โจทย์ระบุ อัตราเร็วคลื่นในเชือกเส้นใหญ่ลดลงครึ่งหนึ่ง แปลว่า v₂ = v₁ / 2 หรือ v₁ / v₂ = 2<br>แทนค่า: 4 / &lambda;₂ = 2 &rarr; &lambda;₂ = 4 / 2 = 2 เซนติเมตร<br><b>คำตอบ:</b> ความยาวคลื่นในเชือกเส้นใหญ่เท่ากับ 2 เซนติเมตร"
+            },
+            {
+                id: 35,
+                cat: 'mix-q',
+                text: "เสาอากาศวิทยุปล่อยคลื่นกระจัดสัญญาณสร้างคลื่นผิวน้ำที่จุดทดลอง โดยมีสมบัติหักเหจากน้ำลึกเข้าน้ำตื้น วัดมุมตกกระทบในน้ำลึกได้ 53 องศา และมุมหักเหในน้ำตื้นได้ 37 องศา ถ้าน้ำลึกมีความยาวคลื่น 8 ซม. จงหาความยาวคลื่นในน้ำตื้น (กำหนด sin 53° = 4/5, sin 37° = 3/5)",
+                hint: "ตั้งกฎสเนลล์หักเหด่วน sinθ_ลึก/sinθ_ตื้น = λ_ลึก/λ_ตื้น แทนค่าอัตราส่วนเศษส่วนได้ทันที",
+                sol: "ใช้สูตร: sin&theta;₁ / sin&theta;₂ = &lambda;₁ / &lambda;₂<br>แทนค่า: sin(53&deg;) / sin(37&deg;) = 8 / &lambda;₂<br>(4/5) / (3/5) = 8 / &lambda;₂ &rarr; 4/3 = 8 / &lambda;₂<br>&lambda;₂ = (8 &times; 3) / 4 = 6 เซนติเมตร<br><b>คำตอบ:</b> ความยาวคลื่นในเขตน้าตื้นเท่ากับ 6 เซนติเมตร"
+            },
+            {
+                id: 36,
+                cat: 'mix-q',
+                text: "แหล่งกำเนิดคลื่นเสียงความถี่สูง 2 แหล่ง เฟสตรงกัน วางห่างกัน 6 เมตร ปล่อยคลื่นเสียงความยาวคลื่น 2 เมตร ผู้สังเกตยืนตรงกลางระหว่างสองแหล่งกำเนิด (จุด O) แล้วเริ่มเดินเลาะไปตามแนวเส้นตรงขนานกับแหล่งกำเนิด เขาจะพบจุดเสียงดับ (แนวบัพ) จุดแรกห่างจากจุดแนวกลางขนาดยึดมุมเท่าใด",
+                hint: "จุดดับแรกคือแนวบัพที่ 1 (N₁) คำนวณหาทิศมุมเปิดด้วยสูตร d sinθ = (n - 0.5)λ แทนค่า n=1",
+                sol: "จากสูตรแทรกสอดฝั่งบัพ (หักล้าง): d sin&theta; = (n - 0.5)&lambda;<br>แทนค่าความห่าง d = 6 เมตร, &lambda; = 2 เมตร และแนวบัพจุดดับแรกสุด n = 1:<br>6 &times; sin&theta; = (1 - 0.5) &times; 2<br>6 &times; sin&theta; = 0.5 &times; 2 = 1<br>sin&theta; = 1/6<br>&theta; = arcsin(1/6)<br><b>คำตอบ:</b> ทำมุม arcsin(1/6) หรือประมาณ 9.59 องศาจากแนวกลาง"
+            },
+            {
+                id: 37,
+                cat: 'mix-q',
+                text: "คลื่นน้ำเคลื่อนที่ผ่านช่องแคบคู่ (Double Slit) ที่มีระยะห่างระหว่างช่อง 8 เซนติเมตร หากต้องการให้แนวปฏิบัพที่ 2 เบนทำมุมกาง 30 องศาพอดี แหล่งกำเนิดคลื่นจะต้องมีความยาวคลื่นกี่เซนติเมตร",
+                hint: "ช่องแคบคู่ประพฤติตัวเสมือนแหล่งกำเนิดอาพันธ์ 2 แหล่ง ใช้สูตรแนวปฏิบัพมุม: d sinθ = nλ",
+                sol: "จากสูตรช่องแคบคู่แนวเสริมสร้าง (ปฏิบัพ): d sin&theta; = n&lambda;<br>แทนค่า d = 8 cm, &theta; = 30&deg;, n = 2 (แนวที่ 2)<br>8 &times; sin(30&deg;) = 2 &times; &lambda;<br>8 &times; (1/2) = 2&lambda; &rarr; 4 = 2&lambda; &rarr; &lambda; = 2 เซนติเมตร<br><b>คำตอบ:</b> ความยาวคลื่นต้องมีค่าเท่ากับ 2 เซนติเมตร"
+            },
+            {
+                id: 38,
+                cat: 'mix-q',
+                text: "คลื่นดลในเส้นเชือกเคลื่อนที่ด้วยความเร็วคงที่ 5 m/s วิ่งไปเจอรอยต่อกับเชือกเส้นใหญ่อีกเส้นที่มีความหนาแน่นมากกว่า ทำให้อัตราเร็วลดลงเหลือ 3 m/s หากคลื่นดลนี้สร้างความกว้างยอดดลแรก 10 เซนติเมตรในเชือกเส้นแรก เมื่อผ่านเข้ารอยต่อเชือกเส้นสอง ยอดดลจะกว้างกี่เซนติเมตร",
+                hint: "ความกว้างยอดดลเปรียบได้เสมือนระยะครึ่งหนึ่งของความยาวคลื่น (λ/2) ซึ่งจะแปรผันตรงกับความเร็ว v เนื่องจาก f คงที่",
+                sol: "เนื่องจากความถี่ f ของคลื่นดลต้องคงที่ตลอดสภาวะรอยต่อ ส่งผลให้ &lambda; &propto; v<br>ความกว้างยอดดล (w) ย่อมแปรผันตรงกับอัตราเร็วคลื่นตัวกลางนั้นๆ ด้วยเช่นกัน: w₁ / w₂ = v₁ / v₂<br>แทนค่าข้อมูล: 10 / w₂ = 5 / 3<br>w₂ = (10 &times; 3) / 5 = 30 / 5 = 6 เซนติเมตร<br><b>คำตอบ:</b> ยอดดลในเชือกเส้นที่สองจะมีความกว้างลดลงเหลือ 6 เซนติเมตร"
+            },
+            {
+                id: 39,
+                cat: 'mix-q',
+                text: "(เชิงทฤษฎี) ข้อใดต่อไปนี้กล่าวอธิบายสมบัติการเลี้ยวเบน (Diffraction) และการแทรกสอด (Interference) ของคลื่นกลได้ถูกต้องสมบูรณ์แบบที่สุด",
+                hint: "วิเคราะห์ความเป็นเนื้อฟิสิกส์: คลื่นแสดงสมบัติเหล่านี้ได้เฉพาะเมื่อเจอสิ่งกีดขวางบางประเภท หรือวัตถุทุกลูกแสดงได้ทุกลักษณะ?",
+                sol: "การเลี้ยวเบนและการแทรกสอดเป็นคุณลักษณะเฉพาะตัวของ <b>คลื่นทุกชนิดโดยไม่ยกเว้น</b> (ไม่ว่าจะเป็นคลื่นกลหรือคลื่นแม่เหล็กไฟฟ้า) ซึ่งอนุภาคที่เป็นสสารเม็ดจะไม่สามารถแสดงสมบัตินี้ได้ โดยการเลี้ยวเบนเกิดจากหน้าคลื่นขยับโอบอ้อมขอบสิ่งกีดขวาง ส่วนการแทรกสอดเกิดจากการซ้อนทับรวมกันของคลื่นมากกว่าหนึ่งขบวน<br><b>คำตอบ:</b> เป็นสมบัติเฉพาะของคลื่นทุกชนิด อนุภาคทั่วไปไม่สามารถแสดงได้"
+            },
+            {
+                id: 40,
+                cat: 'mix-q',
+                text: "ลูกตุ้มนาฬิกาอย่างง่ายเรือนหนึ่งถูกผูกติดขึงไว้ในแนวดิ่งถ้ารถไฟที่แขวนนาฬิกานี้เกิดเร่งความเร็วไปข้างหน้าในแนวราบด้วยความเร่งคงที่ a = g คาบการแกว่งของลูกตุ้มนาฬิกาจะเปลี่ยนไปอย่างไรเมื่อเทียบกับคาบเดิม (T₀) ขณะหยุดนิ่ง",
+                hint: "ระดับสูงพิศดาร: สนามโน้มถ่วงลัพธ์เสมือน (g_eff) ในรถไฟที่กำลังเร่งจะเปลี่ยนไปตามหลักเวกเตอร์มุมฉาก g_eff = √(g² + a²)",
+                sol: "เมื่อรถไฟวิ่งเร่งความเร็วไปข้างหน้าด้วยความเร่ง a สภาพแรงโน้มถ่วงเสมือนภายในจะเกิดแรงเฉื่อยผลักกลับหลัง<br>สนามโน้มถ่วงลัพธ์ใหม่ g_eff = &radic;(g² + a²)<br>จากโจทย์กำหนดความเร่งรถไฟ a = g ย่อมได้: g_eff = &radic;(g² + g²) = &radic;(2g²) = g&radic;2<br>จากสูตรคาบเดิม T₀ = 2π√(L/g) คาบใหม่บนรถไฟเร่งคือ T' = 2π√(L/g_eff) = 2π√(L / g&radic;2)<br>ดึงสัดส่วนความสัมพันธ์จะได้ T' = T₀ / &radic;(&radic;2) = T₀ / 2^(1/4) ≈ T₀ / 1.19<br><b>คำตอบ:</b> คาบการแกว่งจะลดลงเหลือเท่ากับ T₀ / 2^(1/4) หรือสั้นลงช้าลง ทำให้สั่นไวขึ้นลัพธ์ลดลง"
+            }
+        ];
+
+        // Function to render questions into html containers
+        function renderQuiz(filter = 'all') {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = ''; // Reset container
+
+            questions.forEach((q, index) => {
+                // Apply filter rules
+                if (filter !== 'all' && q.cat !== filter) return;
+
+                const qCard = document.createElement('div');
+                qCard.className = 'question-card';
+                
+                let tagText = q.cat === 'shm-q' ? 'ฮาร์มอนิกอย่างง่าย' : q.cat === 'wave-q' ? 'คลื่นกล' : 'โจทย์ประยุกต์ / มหาวิทยาลัย';
+
+                qCard.innerHTML = `
+                    <div class="q-header">
+                        <span class="q-number">ข้อที่ ${q.id}</span>
+                        <span class="q-tag">${tagText}</span>
+                    </div>
+                    <div class="q-text">${q.text}</div>
+                    <div class="quiz-actions">
+                        <button class="action-btn btn-hint" onclick="toggleDisplay('hint-${q.id}')">💡 ดูคำใบ้ด่วน</button>
+                        <button class="action-btn btn-sol" onclick="toggleDisplay('sol-${q.id}')">📝 ดูเฉลยวิธีทำเต็ม</button>
+                    </div>
+                    <div id="hint-${q.id}" class="hint-box"><strong>คำใบ้ช่วยคิด:</strong> ${q.hint}</div>
+                    <div id="sol-${q.id}" class="sol-box"><strong>เฉลยอย่างละเอียดและวิธีทำ:</strong><br>${q.sol}</div>
+                `;
+                container.appendChild(qCard);
+            });
+        }
+
+        // Filter button controller logic
+        function filterQuiz(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            renderQuiz(category);
+        }
+
+        // Initialize quiz render on load
+        window.onload = function() {
+            renderQuiz('all');
+        };
+    </script>
+</body>
+</html>
